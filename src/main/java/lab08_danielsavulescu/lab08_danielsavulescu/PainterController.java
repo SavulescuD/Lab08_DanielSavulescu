@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package lab08_danielsavulescu.lab08_danielsavulescu;
 
 import java.net.URL;
@@ -16,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 
 /**
  * FXML Controller class
@@ -24,7 +21,7 @@ import javafx.scene.paint.Paint;
  * 
  * GitHub repository: https://github.com/SavulescuD/Lab08_DanielSavulescu.git
  */
-public abstract class PainterController implements Initializable {
+public class PainterController implements Initializable {
 
     @FXML
     private RadioButton blackPaint;
@@ -54,7 +51,8 @@ public abstract class PainterController implements Initializable {
     private PenSize radius = PenSize.MEDIUM;
     private Paint brushColor = Color.BLACK;
     
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
         blackPaint.setUserData(Color.BLACK);
         redPaint.setUserData(Color.RED);
         greenPaint.setUserData(Color.GREEN);
@@ -64,26 +62,57 @@ public abstract class PainterController implements Initializable {
         largeSize.setUserData(PenSize.LARGE);
         
     }    
-
+    
+    /**
+     * handles when a color radio button is selected
+     * @param event the event when a color radio button is pressed
+     */
     @FXML
     private void colorRadioButtonSelected(ActionEvent event) {
+        brushColor = (Color) colorToggleGroup.getSelectedToggle().getUserData();
     }
-
+    
+    /**
+     * handles when a size radio button is selected
+     * @param event the event when a size radio button is pressed
+     */
     @FXML
     private void sizeRadioButtonSelected(ActionEvent event) {
+        radius = (PenSize) sizeToggleGroup.getSelectedToggle().getUserData();
     }
-
+    
+    /**
+     * undoes the last action
+     * @param event the event when the undo button is pressed
+     */
     @FXML
     private void undoButtonPressed(ActionEvent event) {
+        int num = drawingAreaPane.getChildren().size();
+        
+        if (num > 0) {
+            drawingAreaPane.getChildren().remove(num - 1);
+        }
     }
-
+    
+    /**
+     * clears the whole drawing area
+     * @param event the event when the clear button is pressed
+     */
     @FXML
     private void clearButtonPressed(ActionEvent event) {
+        drawingAreaPane.getChildren().clear();
     }
-
+    
+    /**
+     * draws on the pane when the mouse is dragged
+     * @param event the event when the mouse is dragged
+     */
     @FXML
     private void drawingAreaMouseDragged(MouseEvent event) {
+        Circle circle = new Circle(event.getX(), event.getY(), radius.getRadius(), brushColor);
+        drawingAreaPane.getChildren().add(circle);
     }
+
     
     private enum PenSize {
         SMALL(2),
@@ -96,5 +125,4 @@ public abstract class PainterController implements Initializable {
         
         public int getRadius() {return radius;}
     };
-    
 }
