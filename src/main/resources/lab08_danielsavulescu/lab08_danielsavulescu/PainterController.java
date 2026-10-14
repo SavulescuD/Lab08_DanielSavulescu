@@ -20,7 +20,9 @@ import javafx.scene.paint.Paint;
 /**
  * FXML Controller class
  *
- * @author 2540408
+ * @author 2540408 - Daniel Savulescu
+ * 
+ * GitHub repository: https://github.com/SavulescuD/Lab08_DanielSavulescu.git
  */
 public abstract class PainterController implements Initializable {
 
